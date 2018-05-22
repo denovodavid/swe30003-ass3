@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { firebaseMutations } from 'vuexfire'
 import menu from './menu'
+import order from './order'
 
 Vue.use(Vuex)
 
 export const options = {
   modules: {
-    menu
+    menu,
+    order
   },
   mutations: {
     ...firebaseMutations
@@ -19,11 +21,13 @@ const store = new Vuex.Store(options)
 
 if (module.hot) {
   module.hot.accept([
-    './menu'
+    './menu',
+    './order'
   ], () => {
     store.hotUpdate({
       modules: {
-        menu: require('./menu').default
+        menu: require('./menu').default,
+        order: require('./order').default
       }
     })
   })

@@ -19,5 +19,6 @@ new Vue({
   template: '<App/>',
   created () {
     this.$store.dispatch('menu/bindRefs')
+    this.$store.dispatch('order/bindRefs')
   }
 })
