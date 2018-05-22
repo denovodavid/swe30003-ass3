@@ -10,6 +10,19 @@ Vue.config.productionTip = false
 
 sync(store, router)
 
+Vue.filter('time', (timestamp) => {
+  const ms = timestamp % 1000
+  timestamp = (timestamp - ms) / 1000
+  const secs = timestamp % 60
+  timestamp = (timestamp - secs) / 60
+  const mins = timestamp % 60
+
+  const minsString = Math.abs(mins).toString().padStart(2, '0')
+  const secsString = Math.abs(secs).toString().padStart(2, '0')
+
+  return `${timestamp < 0 ? '-' : ''}${minsString}:${secsString}`
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
