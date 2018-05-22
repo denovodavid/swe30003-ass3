@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import moduleName from './moduleName'
+import { firebaseMutations } from 'vuexfire'
 import menu from './menu'
 
 Vue.use(Vuex)
@@ -8,6 +8,9 @@ Vue.use(Vuex)
 export const options = {
   modules: {
     menu
+  },
+  mutations: {
+    ...firebaseMutations
   },
   strict: process.env.NODE_ENV !== 'production'
 }
