@@ -1,6 +1,6 @@
 {
   "name": "swe30003-ass3",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Vue.js project",
   "author": "smeagolem <stooge213@hotmail.com>",
   "private": true,
@@ -13,8 +13,14 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "firebase": "^5.0.3",
+    "lodash": "^4.17.10",
+    "normalize.css": "^8.0.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "vuex-router-sync": "^5.0.0",
+    "vuexfire": "^2.3.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
