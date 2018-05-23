@@ -1,138 +1,234 @@
 <template>
-<div>
-  <menu-bar/>
-  <h1>Menu Page</h1>
-  <h2>Items</h2>
-  <div>
-    <label>Name:</label>
-    <input type="text" v-model.trim="item.name">
-  </div>
-  <div>
-    <label>Price:</label>
-    <input type="number" v-model.number="item.price">
-  </div>
-  <div>
-    <label>Description:</label>
-    <input type="text" v-model.trim="item.description">
-  </div>
-  <button @click="addItem">Add Item</button>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Description</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in items" :key="item['.key']">
-        <td>{{ item.name }}</td>
-        <td>{{ item.price }}</td>
-        <td>{{ item.description }}</td>
-        <td><button @click="editItem(item)">Edit</button></td>
-        <td><button @click="$store.dispatch('menu/removeItem', item)">Remove</button></td>
-      </tr>
-    </tbody>
-  </table>
-  <h2>Menus</h2>
-  <div>
-    <label>Name:</label>
-    <input type="text" v-model.trim="menu.name">
-  </div>
-  <div>
-    <label>Items:</label>
-    <select multiple v-model="menu.items">
-      <option
-        v-for="item in items"
-        :key="item['.key']"
-        :value="item['.key']"
-      >
-        {{ item.name }}
-      </option>
-    </select>
-  </div>
-  <div>
-    <label>Description:</label>
-    <input type="text" v-model.trim="menu.description">
-  </div>
-  <button @click="addMenu">Add Menu</button>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Items</th>
-        <th>Description</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="menu in menus" :key="menu['.key']">
-        <td>{{ menu.name }}</td>
-        <td>{{ menu.items.length }} Items</td>
-        <td>{{ menu.description }}</td>
-        <td><button @click="editMenu(menu)">Edit</button></td>
-        <td><button @click="$store.dispatch('menu/removeMenu', menu)">Remove</button></td>
-      </tr>
-    </tbody>
-  </table>
+<b-container>
+  <br>
+  <b-card no-body>
+    <b-tabs pills card vertical>
+      <b-tab title="Items" active>
+        <b-form @submit="addItem" @reset="clearItem">
+          <b-form-group label="Name">
+            <b-form-input
+              type="text"
+              v-model.trim="item.name"
+              required
+              placeholder="Big BOSH! Burger"
+            />
+          </b-form-group>
+          <b-form-group label="Price">
+            <b-form-input
+              type="number"
+              v-model.number="item.price"
+              required
+              placeholder="37"
+            />
+          </b-form-group>
+          <b-form-group label="Description">
+            <b-form-textarea
+              v-model="item.description"
+              :rows="3"
+              :max-rows="6"
+              :no-resize="true"
+              required
+              placeholder="This is very delicious."
+            />
+          </b-form-group>
+          <b-button type="submit" variant="primary">Add Item</b-button>
+          <b-button
+            type="reset"
+            variant="outline-danger"
+            class="float-right"
+          >
+            Reset
+          </b-button>
+        </b-form>
+        <br>
+        <!-- TODO: add search/filter -->
+        <b-list-group>
+          <b-list-group-item
+            v-for="item in items"
+            :key="item['.key']"
+            class="flex-column align-items-start"
+          >
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ item.name }}</h5>
+              <h5>{{ item.price | money }}</h5>
+            </div>
+            <p class="mb-1">{{ item.description }}</p>
+            <b-button
+              @click="editItem(item)"
+              size="sm"
+              variant="secondary"
+            >
+              Edit
+            </b-button>
+            <!-- TODO: add popover confirmation -->
+            <b-button
+              @click="$store.dispatch('menu/removeItem', item)"
+              size="sm"
+              variant="danger"
+              class="float-right"
+            >
+              Remove
+            </b-button>
+          </b-list-group-item>
+        </b-list-group>
+      </b-tab>
+      <b-tab title="Menus">
+        <b-form @submit="addMenu" @reset="clearMenu">
+          <b-form-group label="Name">
+            <b-form-input
+              type="text"
+              v-model.trim="menu.name"
+              required
+              placeholder="Quick Eats"
+            />
+          </b-form-group>
+          <!-- TODO: better way to select items -->
+          <b-form-group label="Items">
+            <b-form-select
+              v-model="menu.items"
+              :options="items.map(x => ({ value: x['.key'], text: x.name }))"
+              multiple
+              required
+            />
+          </b-form-group>
+          <b-form-group label="Description">
+            <b-form-textarea
+              v-model="menu.description"
+              :rows="3"
+              :max-rows="6"
+              :no-resize="true"
+              required
+              placeholder="The most efficient food around."
+            />
+          </b-form-group>
+          <b-button type="submit" variant="primary">Add Menu</b-button>
+          <b-button
+            type="reset"
+            variant="outline-danger"
+            class="float-right"
+          >
+            Reset
+          </b-button>
+        </b-form>
+        <br>
+        <!-- TODO: add search/filter -->
+        <b-list-group>
+          <b-list-group-item
+            v-for="menu in menus"
+            :key="menu['.key']"
+            class="flex-column align-items-start"
+          >
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ menu.name }}</h5>
+              <h5>{{ menu.items.length }} Item{{ menu.items.length > 1 ? 's' : '' }}</h5>
+            </div>
+            <p class="mb-1">{{ menu.description }}</p>
+            <ul>
+              <!-- TODO: make this more efficient -->
+              <li v-for="item in menu.items" :key="item">
+                {{ items.find(x => x['.key'] === item).name }}
+              </li>
+            </ul>
+            <b-button
+              @click="editMenu(menu)"
+              size="sm"
+              variant="secondary"
+            >
+              Edit
+            </b-button>
+            <!-- TODO: add popover confirmation -->
+            <b-button
+              @click="$store.dispatch('menu/removeMenu', menu)"
+              size="sm"
+              variant="danger"
+              class="float-right"
+            >
+              Remove
+            </b-button>
+          </b-list-group-item>
+        </b-list-group>
+      </b-tab>
+    </b-tabs>
+  </b-card>
 
-  <modal
+  <!-- TODO: fix form validation -->
+  <b-modal
+    ref="editItemModal"
+    @ok="$event.preventDefault(); updateItem(editableItem)"
     title="Edit Item"
-    :open="editableItemOpen"
-    @close="editableItemOpen = false"
   >
-    <div>
-      <label>Name:</label>
-      <input type="text" v-model.trim="editableItem.name">
-    </div>
-    <div>
-      <label>Price:</label>
-      <input type="number" v-model.number="editableItem.price">
-    </div>
-    <div>
-      <label>Description:</label>
-      <input type="text" v-model.trim="editableItem.description">
-    </div>
-    <button @click="updateItem">Save</button>
-  </modal>
+    <b-form>
+      <b-form-group label="Name">
+        <b-form-input
+          type="text"
+          v-model.trim="editableItem.name"
+          required
+          placeholder="Big BOSH! Burger"
+        />
+      </b-form-group>
+      <b-form-group label="Price">
+        <b-form-input
+          type="number"
+          v-model.number="editableItem.price"
+          required
+          placeholder="37"
+        />
+      </b-form-group>
+      <b-form-group label="Description">
+        <b-form-textarea
+          v-model="editableItem.description"
+          :rows="3"
+          :max-rows="6"
+          :no-resize="true"
+          required
+          placeholder="This is very delicious."
+        />
+      </b-form-group>
+    </b-form>
+  </b-modal>
 
-  <modal
+  <!-- TODO: fix form validation -->
+  <b-modal
+    ref="editMenuModal"
+    @ok="$event.preventDefault(); updateMenu(editableMenu)"
     title="Edit Menu"
-    :open="editableMenuOpen"
-    @close="editableMenuOpen = false"
   >
-    <div>
-      <label>Name:</label>
-      <input type="text" v-model.trim="editableMenu.name">
-    </div>
-    <div>
-      <label>Items:</label>
-      <select multiple v-model="editableMenu.items">
-        <option
-          v-for="item in items"
-          :key="item['.key']"
-          :value="item['.key']"
-        >
-          {{ item.name }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label>Description:</label>
-      <input type="text" v-model.trim="editableMenu.description">
-    </div>
-    <button @click="updateMenu">Save</button>
-  </modal>
+    <b-form>
+      <b-form-group label="Name">
+        <b-form-input
+          type="text"
+          v-model.trim="editableMenu.name"
+          required
+          placeholder="Quick Eats"
+        />
+      </b-form-group>
+      <!-- TODO: better way to select items -->
+      <b-form-group label="Items">
+        <b-form-select
+          v-model="editableMenu.items"
+          :options="items.map(x => ({ value: x['.key'], text: x.name }))"
+          multiple
+          required
+        />
+      </b-form-group>
+      <b-form-group label="Description">
+        <b-form-textarea
+          v-model="editableMenu.description"
+          :rows="3"
+          :max-rows="6"
+          :no-resize="true"
+          required
+          placeholder="The most efficient food around."
+        />
+      </b-form-group>
+    </b-form>
+  </b-modal>
 
-</div>
+</b-container>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import MenuBar from '@/components/MenuBar'
 import Modal from '@/components/Modal'
 import clone from 'lodash/clone'
 
@@ -163,19 +259,16 @@ class Menu {
 export default {
   name: 'menu-page',
   components: {
-    MenuBar,
     Modal
   },
   data () {
     return {
       item: new Item(),
-      editableItemOpen: false,
       editableItem: {
         '.key': '',
         ...new Item()
       },
       menu: new Menu(),
-      editableMenuOpen: false,
       editableMenu: {
         '.key': '',
         ...new Menu()
@@ -196,12 +289,12 @@ export default {
     },
     editItem (item) {
       this.editableItem = clone(item)
-      this.editableItemOpen = true
+      this.$refs.editItemModal.show()
     },
-    async updateItem () {
+    async updateItem (item) {
       // TODO: handle error
-      await this.$store.dispatch('menu/updateItem', this.editableItem)
-      this.editableItemOpen = false
+      await this.$store.dispatch('menu/updateItem', item)
+      this.$refs.editItemModal.hide()
     },
     clearItem () {
       this.item = new Item()
@@ -213,12 +306,12 @@ export default {
     },
     editMenu (menu) {
       this.editableMenu = clone(menu)
-      this.editableMenuOpen = true
+      this.$refs.editMenuModal.show()
     },
-    async updateMenu () {
+    async updateMenu (menu) {
       // TODO: handle error
-      await this.$store.dispatch('menu/updateMenu', this.editableMenu)
-      this.editableMenuOpen = false
+      await this.$store.dispatch('menu/updateMenu', menu)
+      this.$refs.editMenuModal.hide()
     },
     clearMenu () {
       this.menu = new Menu()
