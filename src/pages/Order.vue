@@ -188,12 +188,9 @@ export default {
   },
   methods: {
     async addOrder () {
-      try {
-        await this.$store.dispatch('order/addOrder', this.order)
-        this.clearOrder()
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error=
+      await this.$store.dispatch('order/addOrder', this.order)
+      this.clearOrder()
     },
     clearOrder () {
       this.order = new Order()
@@ -203,22 +200,21 @@ export default {
       this.editableOrderOpen = true
     },
     async readyOrder (order) {
+      // TODO: handle error
       order = clone(order)
       order.state = order.state !== 'ready' ? 'ready' : 'placed'
       await this.updateOrder(order)
     },
     async completeOrder (order) {
+      // TODO: handle error
       order = clone(order)
       order.state = 'served'
       await this.updateOrder(order)
     },
     async updateOrder (order) {
-      try {
-        await this.$store.dispatch('order/updateOrder', order)
-        this.editableOrderOpen = false
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('order/updateOrder', order)
+      this.editableOrderOpen = false
     }
   }
 }
