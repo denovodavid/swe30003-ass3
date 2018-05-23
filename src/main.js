@@ -31,7 +31,19 @@ new Vue({
   components: { App },
   template: '<App/>',
   created () {
+    this.updateTimestamp()
+    setInterval(this.updateTimestamp, 1000)
     this.$store.dispatch('menu/bindRefs')
     this.$store.dispatch('order/bindRefs')
+    this.$store.dispatch('reservation/bindRefs')
+    this.$store.dispatch('sale/bindRefs')
+  },
+  destroyed () {
+    clearInterval(this.updateTimestamp)
+  },
+  methods: {
+    updateTimestamp () {
+      this.$store.commit('updateTimestamp')
+    }
   }
 })

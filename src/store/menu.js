@@ -16,57 +16,77 @@ export default {
       bindFirebaseRef('menus', menus)
       bindFirebaseRef('items', items)
     }),
-    addItem ({ dispatch, commit }, item) {
-      // TODO: add validation
-      items.push({
+    async addItem ({ dispatch, commit }, item) {
+      if (
+        item.name.trim() === '' ||
+        item.price <= 0 ||
+        item.description.trim() === ''
+      ) {
+        throw new Error('Invalid Item')
+      }
+      const { key } = await items.push({
         name: item.name,
         price: item.price,
         description: item.description
-      }, () => {
-        console.log('Item Added')
       })
+      return key
     },
-    updateItem ({ dispatch, commit }, item) {
-      // TODO: add validation
-      items.child(item['.key']).update({
+    async updateItem ({ dispatch, commit }, item) {
+      if (
+        item['.key'].trim() === '' ||
+        item.name.trim() === '' ||
+        item.price <= 0 ||
+        item.description.trim() === ''
+      ) {
+        throw new Error('Invalid Item')
+      }
+      await items.child(item['.key']).update({
         name: item.name,
         price: item.price,
         description: item.description
-      }, () => {
-        console.log('Item Updated')
       })
     },
-    removeItem ({ dispatch, commit }, item) {
-      // TODO: add validation
-      items.child(item['.key']).remove(() => {
-        console.log('Item Removed')
-      })
+    async removeItem ({ dispatch, commit }, item) {
+      if (item['.key'].trim() === '') {
+        throw new Error('Invalid Item')
+      }
+      await items.child(item['.key']).remove()
     },
-    addMenu ({ dispatch, commit }, menu) {
-      // TODO: add validation
-      menus.push({
+    async addMenu ({ dispatch, commit }, menu) {
+      if (
+        menu.name.trim() === '' ||
+        menu.items.length <= 0 ||
+        menu.description.trim() === ''
+      ) {
+        throw new Error('Invalid Menu')
+      }
+      const { key } = menus.push({
         name: menu.name,
         items: menu.items,
         description: menu.description
-      }, () => {
-        console.log('Menu Added')
       })
+      return key
     },
-    updateMenu ({ dispatch, commit }, menu) {
-      // TODO: add validation
-      menus.child(menu['.key']).update({
+    async updateMenu ({ dispatch, commit }, menu) {
+      if (
+        menu['.key'].trim() === '' ||
+        menu.name.trim() === '' ||
+        menu.items.length <= 0 ||
+        menu.description.trim() === ''
+      ) {
+        throw new Error('Invalid Menu')
+      }
+      await menus.child(menu['.key']).update({
         name: menu.name,
         items: menu.items,
         description: menu.description
-      }, () => {
-        console.log('Menu Updated')
       })
     },
-    removeMenu ({ dispatch, commit }, menu) {
-      // TODO: add validation
-      menus.child(menu['.key']).remove(() => {
-        console.log('Menu Removed')
-      })
+    async removeMenu ({ dispatch, commit }, menu) {
+      if (menu['.key'].trim() === '') {
+        throw new Error('Invalid Menu')
+      }
+      await menus.child(menu['.key']).remove()
     }
   },
   getters: {

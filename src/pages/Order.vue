@@ -136,10 +136,30 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import MenuBar from '@/components/MenuBar'
 import Modal from '@/components/Modal'
 import clone from 'lodash/clone'
+
+class Order {
+  constructor (
+    type = 'sitting',
+    table = 0,
+    name = '',
+    phone = '',
+    items = [],
+    state = 'placed',
+    payment = ''
+  ) {
+    this.type = type
+    this.table = table
+    this.name = name
+    this.phone = phone
+    this.items = items
+    this.state = state
+    this.payment = payment
+  }
+}
 
 export default {
   name: 'order-page',
@@ -149,95 +169,52 @@ export default {
   },
   data () {
     return {
-      timestamp: null,
-      order: {
-        type: 'sitting',
-        table: 0,
-        name: '',
-        phone: '',
-        items: []
-      },
+      order: new Order(),
       editableOrderOpen: false,
       editableOrder: {
         '.key': '',
-        type: '',
-        table: 0,
-        name: '',
-        phone: '',
-        items: []
+        ...new Order()
       }
     }
   },
-  created () {
-    this.updateTimestamp()
-    setInterval(this.updateTimestamp, 1000)
-  },
-  destroyed () {
-    clearInterval(this.updateTimestamp)
-  },
   computed: {
-    activeOrders () {
-      return this.orders
-        .filter(order => order.state !== 'served')
-        .map(order => {
-          order.timer = (order.createdAt + 8 * 60 * 1000) - this.timestamp
-          order.overdue = order.state !== 'served' && order.timer <= 0
-          return order
-        })
-        .sort((a, b) => a.timer > b.timer)
-    },
-    completedOrders () {
-      return this.orders
-        .filter(order => order.state === 'served')
-        .sort((a, b) => a.createdAt < b.createdAt)
-    },
-    ...mapState('order', [
-      'orders'
-    ]),
     ...mapState('menu', [
       'items'
+    ]),
+    ...mapGetters('order', [
+      'activeOrders',
+      'completedOrders'
     ])
   },
   methods: {
     async addOrder () {
-      try {
-        await this.$store.dispatch('order/addOrder', this.order)
-        this.clearOrder()
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error=
+      await this.$store.dispatch('order/addOrder', this.order)
+      this.clearOrder()
     },
     clearOrder () {
-      this.order.type = 'sitting'
-      this.order.table = 0
-      this.order.name = ''
-      this.order.phone = ''
-      this.order.items = []
+      this.order = new Order()
     },
     editOrder (order) {
       this.editableOrder = clone(order)
       this.editableOrderOpen = true
     },
     async readyOrder (order) {
+      // TODO: handle error
       order = clone(order)
       order.state = order.state !== 'ready' ? 'ready' : 'placed'
       await this.updateOrder(order)
     },
     async completeOrder (order) {
+      // TODO: handle error
       order = clone(order)
       order.state = 'served'
       await this.updateOrder(order)
     },
     async updateOrder (order) {
-      try {
-        await this.$store.dispatch('order/updateOrder', order)
-        this.editableOrderOpen = false
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    updateTimestamp () {
-      this.timestamp = +new Date()
+      // TODO: handle error
+      await this.$store.dispatch('order/updateOrder', order)
+      this.editableOrderOpen = false
     }
   }
 }
