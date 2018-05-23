@@ -4,6 +4,7 @@ import { firebaseMutations } from 'vuexfire'
 import menu from './menu'
 import order from './order'
 import reservation from './reservation'
+import sale from './sale'
 
 Vue.use(Vuex)
 
@@ -11,7 +12,8 @@ export const options = {
   modules: {
     menu,
     order,
-    reservation
+    reservation,
+    sale
   },
   mutations: {
     updateTimestamp (state) {
@@ -36,13 +38,15 @@ if (module.hot) {
   module.hot.accept([
     './menu',
     './order',
-    './reservation'
+    './reservation',
+    './sale'
   ], () => {
     store.hotUpdate({
       modules: {
         menu: require('./menu').default,
         order: require('./order').default,
-        reservation: require('./reservation').default
+        reservation: require('./reservation').default,
+        sale: require('./sale').default
       }
     })
   })
