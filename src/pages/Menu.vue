@@ -2,10 +2,10 @@
 <b-container>
   <br>
   <b-card no-body>
-    <b-tabs pills card vertical>
+    <b-tabs pills card>
       <b-tab title="Items" active>
         <h1>Items</h1>
-        <b-form @submit="addItem" @reset="clearItem">
+        <b-form @submit.stop.prevent="addItem" @reset="clearItem">
           <b-form-group label="Name">
             <b-form-input
               type="text"
@@ -75,7 +75,7 @@
       </b-tab>
       <b-tab title="Menus">
         <h1>Menus</h1>
-        <b-form @submit="addMenu" @reset="clearMenu">
+        <b-form @submit.stop.prevent="addMenu" @reset="clearMenu">
           <b-form-group label="Name">
             <b-form-input
               type="text"
