@@ -14,9 +14,24 @@ export default {
     bindRefs: firebaseAction(({ bindFirebaseRef }) => {
       bindFirebaseRef('orders', orders)
     }),
-    addOrder ({ dispatch, commit }, order) {
-      // TODO: add validation
-      orders.push({
+    async addOrder ({ dispatch, commit }, order) {
+      let invalid = false
+      if (order.type === 'sitting') {
+        if (
+          order.table <= 0 ||
+          order.items.length <= 0
+        ) invalid = true
+      } else if (order.type === 'takeaway') {
+        if (
+          order.name.trim() === '' ||
+          order.phone.trim() === '' ||
+          order.items.length <= 0
+        ) invalid = true
+      } else {
+        invalid = true
+      }
+      if (invalid) throw new Error('Invalid Order')
+      const { orderKey } = await orders.push({
         type: order.type,
         table: order.table,
         name: order.name,
@@ -25,13 +40,29 @@ export default {
         state: 'placed',
         payment: '',
         createdAt: firebase.database.ServerValue.TIMESTAMP
-      }, () => {
-        console.log('Order Added')
       })
+      return orderKey
     },
-    updateOrder ({ dispatch, commit }, order) {
-      // TODO: add validation
-      orders.child(order['.key']).update({
+    async updateOrder ({ dispatch, commit }, order) {
+      let invalid = false
+      if (order['.key'].trim() === '') {
+        invalid = true
+      } else if (order.type === 'sitting') {
+        if (
+          order.table <= 0 ||
+          order.items.length <= 0
+        ) invalid = true
+      } else if (order.type === 'takeaway') {
+        if (
+          order.name.trim() === '' ||
+          order.phone.trim() === '' ||
+          order.items.length <= 0
+        ) invalid = true
+      } else {
+        invalid = true
+      }
+      if (invalid) throw new Error('Invalid Order')
+      await orders.child(order['.key']).update({
         type: order.type,
         table: order.table,
         name: order.name,
@@ -39,15 +70,13 @@ export default {
         items: order.items,
         state: order.state,
         payment: order.payment
-      }, () => {
-        console.log('Order Updated')
       })
     },
-    removeOrder ({ dispatch, commit }, order) {
-      // TODO: add validation
-      orders.child(order['.key']).remove(() => {
-        console.log('Order Removed')
-      })
+    async removeOrder ({ dispatch, commit }, order) {
+      if (order['.key'].trim() === '') {
+        throw new Error('Invalid Order')
+      }
+      orders.child(order['.key']).remove()
     }
   },
   getters: {
