@@ -23,6 +23,7 @@ export default {
         phone: order.phone,
         items: order.items,
         state: 'placed',
+        payment: '',
         createdAt: firebase.database.ServerValue.TIMESTAMP
       }, () => {
         console.log('Order Added')
@@ -36,7 +37,8 @@ export default {
         name: order.name,
         phone: order.phone,
         items: order.items,
-        state: order.state
+        state: order.state,
+        payment: order.payment
       }, () => {
         console.log('Order Updated')
       })
