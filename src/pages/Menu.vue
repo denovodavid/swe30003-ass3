@@ -177,12 +177,9 @@ export default {
   },
   methods: {
     async addItem () {
-      try {
-        await this.$store.dispatch('menu/addItem', this.item)
-        this.clearItem()
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('menu/addItem', this.item)
+      this.clearItem()
     },
     editItem (item) {
       this.editableItem['.key'] = item['.key']
@@ -192,12 +189,9 @@ export default {
       this.editableItemOpen = true
     },
     async updateItem () {
-      try {
-        await this.$store.dispatch('menu/updateItem', this.editableItem)
-        this.editableItemOpen = false
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('menu/updateItem', this.editableItem)
+      this.editableItemOpen = false
     },
     clearItem () {
       this.item.name = ''
@@ -205,12 +199,9 @@ export default {
       this.item.description = ''
     },
     async addMenu () {
-      try {
-        await this.$store.dispatch('menu/addMenu', this.menu)
-        this.clearMenu()
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('menu/addMenu', this.menu)
+      this.clearMenu()
     },
     editMenu (menu) {
       this.editableMenu['.key'] = menu['.key']
@@ -220,12 +211,9 @@ export default {
       this.editableMenuOpen = true
     },
     async updateMenu () {
-      try {
-        await this.$store.dispatch('menu/updateMenu', this.editableMenu)
-        this.editableMenuOpen = false
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('menu/updateMenu', this.editableMenu)
+      this.editableMenuOpen = false
     },
     clearMenu () {
       this.menu.name = ''
