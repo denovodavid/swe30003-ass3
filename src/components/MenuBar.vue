@@ -1,23 +1,21 @@
 <template>
-  <div>
-    <ul>
-      <li>
-        <router-link :to="{ name: 'Home' }">Home</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'Menu' }">Menu</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'Order' }">Order</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'Reservation' }">Reservation</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'Sale' }">Sale</router-link>
-      </li>
-    </ul>
-  </div>
+<b-navbar toggleable="md" type="dark" variant="dark">
+  <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+  <b-navbar-brand href="#">The Cuddly Wombat</b-navbar-brand>
+  <b-collapse is-nav id="nav_collapse">
+    <b-navbar-nav>
+      <b-nav-item :to="{ name: 'Home' }">Home</b-nav-item>
+      <b-nav-item :to="{ name: 'Menu' }">Menu</b-nav-item>
+      <b-nav-item :to="{ name: 'Order' }">Order</b-nav-item>
+      <b-nav-item :to="{ name: 'Reservation' }">Reservation</b-nav-item>
+      <b-nav-item :to="{ name: 'Sale' }">Sale</b-nav-item>
+    </b-navbar-nav>
+    <!-- Right aligned nav items -->
+    <b-navbar-nav class="ml-auto">
+      <b-nav-item href="#">Sign In</b-nav-item>
+    </b-navbar-nav>
+  </b-collapse>
+</b-navbar>
 </template>
 
 <script>
@@ -27,31 +25,5 @@ export default {
 </script>
 
 <style scoped>
-div {
-  width: 100%;
-  height: 50px;
-  background: #333;
-}
 
-ul {
-  margin: 0;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-}
-
-a {
-  display: inline-block;
-  margin: 0.5em;
-  padding: 0.4em 0.8em;
-  border-radius: 0.2em;
-  color: #eee;
-  text-decoration: none;
-}
-
-a:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
 </style>
