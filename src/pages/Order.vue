@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import MenuBar from '@/components/MenuBar'
 import Modal from '@/components/Modal'
 import clone from 'lodash/clone'
@@ -169,7 +169,6 @@ export default {
   },
   data () {
     return {
-      timestamp: null,
       order: new Order(),
       editableOrderOpen: false,
       editableOrder: {
@@ -178,34 +177,13 @@ export default {
       }
     }
   },
-  created () {
-    this.updateTimestamp()
-    setInterval(this.updateTimestamp, 1000)
-  },
-  destroyed () {
-    clearInterval(this.updateTimestamp)
-  },
   computed: {
-    activeOrders () {
-      return this.orders
-        .filter(order => order.state !== 'served')
-        .map(order => {
-          order.timer = (order.createdAt + 20 * 60 * 1000) - this.timestamp
-          order.overdue = order.state !== 'served' && order.timer <= 0
-          return order
-        })
-        .sort((a, b) => a.timer > b.timer)
-    },
-    completedOrders () {
-      return this.orders
-        .filter(order => order.state === 'served')
-        .sort((a, b) => a.createdAt < b.createdAt)
-    },
-    ...mapState('order', [
-      'orders'
-    ]),
     ...mapState('menu', [
       'items'
+    ]),
+    ...mapGetters('order', [
+      'activeOrders',
+      'completedOrders'
     ])
   },
   methods: {
@@ -241,9 +219,6 @@ export default {
       } catch (error) {
         console.error(error)
       }
-    },
-    updateTimestamp () {
-      this.timestamp = +new Date()
     }
   }
 }

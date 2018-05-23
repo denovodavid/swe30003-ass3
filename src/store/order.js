@@ -50,5 +50,21 @@ export default {
       })
     }
   },
-  getters: {}
+  getters: {
+    activeOrders (state, getters, rootState, rootGetters) {
+      return state.orders
+        .filter(order => order.state !== 'served')
+        .map(order => {
+          order.timer = (order.createdAt + 20 * 60 * 1000) - rootGetters.timestamp
+          order.overdue = order.state !== 'served' && order.timer <= 0
+          return order
+        })
+        .sort((a, b) => a.timer > b.timer)
+    },
+    completedOrders (state) {
+      return state.orders
+        .filter(order => order.state === 'served')
+        .sort((a, b) => a.createdAt < b.createdAt)
+    }
+  }
 }
