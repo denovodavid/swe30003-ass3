@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/pages/Home'
 import Menu from '@/pages/Menu'
 import Order from '@/pages/Order'
+import Reservation from '@/pages/Reservation'
 
 Vue.use(Router)
 
@@ -22,6 +23,12 @@ export default new Router({
       path: '/order',
       name: 'Order',
       component: Order
+    },
+    {
+      path: '/reservation',
+      name: 'Reservation',
+      component: Reservation
     }
+
   ]
 })
