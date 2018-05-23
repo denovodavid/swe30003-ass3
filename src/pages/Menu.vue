@@ -134,6 +134,31 @@
 import { mapState } from 'vuex'
 import MenuBar from '@/components/MenuBar'
 import Modal from '@/components/Modal'
+import clone from 'lodash/clone'
+
+class Item {
+  constructor (
+    name = '',
+    price = 0,
+    description = ''
+  ) {
+    this.name = name
+    this.price = price
+    this.description = description
+  }
+}
+
+class Menu {
+  constructor (
+    name = '',
+    items = [],
+    description = ''
+  ) {
+    this.name = name
+    this.items = items
+    this.description = description
+  }
+}
 
 export default {
   name: 'menu-page',
@@ -143,29 +168,17 @@ export default {
   },
   data () {
     return {
-      item: {
-        name: '',
-        price: 0,
-        description: ''
-      },
+      item: new Item(),
       editableItemOpen: false,
       editableItem: {
         '.key': '',
-        name: '',
-        price: 0,
-        description: ''
+        ...new Item()
       },
-      menu: {
-        name: '',
-        items: [],
-        description: ''
-      },
+      menu: new Menu(),
       editableMenuOpen: false,
       editableMenu: {
         '.key': '',
-        name: '',
-        items: [],
-        description: ''
+        ...new Menu()
       }
     }
   },
@@ -182,10 +195,7 @@ export default {
       this.clearItem()
     },
     editItem (item) {
-      this.editableItem['.key'] = item['.key']
-      this.editableItem.name = item.name
-      this.editableItem.price = item.price
-      this.editableItem.description = item.description
+      this.editableItem = clone(item)
       this.editableItemOpen = true
     },
     async updateItem () {
@@ -194,9 +204,7 @@ export default {
       this.editableItemOpen = false
     },
     clearItem () {
-      this.item.name = ''
-      this.item.price = 0
-      this.item.description = ''
+      this.item = new Item()
     },
     async addMenu () {
       // TODO: handle error
@@ -204,10 +212,7 @@ export default {
       this.clearMenu()
     },
     editMenu (menu) {
-      this.editableMenu['.key'] = menu['.key']
-      this.editableMenu.name = menu.name
-      this.editableMenu.items = menu.items
-      this.editableMenu.description = menu.description
+      this.editableMenu = clone(menu)
       this.editableMenuOpen = true
     },
     async updateMenu () {
@@ -216,9 +221,7 @@ export default {
       this.editableMenuOpen = false
     },
     clearMenu () {
-      this.menu.name = ''
-      this.menu.items = []
-      this.menu.description = ''
+      this.menu = new Menu()
     }
   }
 }
