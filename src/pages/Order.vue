@@ -141,6 +141,26 @@ import MenuBar from '@/components/MenuBar'
 import Modal from '@/components/Modal'
 import clone from 'lodash/clone'
 
+class Order {
+  constructor (
+    type = 'sitting',
+    table = 0,
+    name = '',
+    phone = '',
+    items = [],
+    state = 'placed',
+    payment = ''
+  ) {
+    this.type = type
+    this.table = table
+    this.name = name
+    this.phone = phone
+    this.items = items
+    this.state = state
+    this.payment = payment
+  }
+}
+
 export default {
   name: 'order-page',
   components: {
@@ -150,21 +170,11 @@ export default {
   data () {
     return {
       timestamp: null,
-      order: {
-        type: 'sitting',
-        table: 0,
-        name: '',
-        phone: '',
-        items: []
-      },
+      order: new Order(),
       editableOrderOpen: false,
       editableOrder: {
         '.key': '',
-        type: '',
-        table: 0,
-        name: '',
-        phone: '',
-        items: []
+        ...new Order()
       }
     }
   },
@@ -180,7 +190,7 @@ export default {
       return this.orders
         .filter(order => order.state !== 'served')
         .map(order => {
-          order.timer = (order.createdAt + 8 * 60 * 1000) - this.timestamp
+          order.timer = (order.createdAt + 20 * 60 * 1000) - this.timestamp
           order.overdue = order.state !== 'served' && order.timer <= 0
           return order
         })
@@ -208,11 +218,7 @@ export default {
       }
     },
     clearOrder () {
-      this.order.type = 'sitting'
-      this.order.table = 0
-      this.order.name = ''
-      this.order.phone = ''
-      this.order.items = []
+      this.order = new Order()
     },
     editOrder (order) {
       this.editableOrder = clone(order)
