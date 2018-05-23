@@ -14,7 +14,18 @@ export const options = {
     reservation
   },
   mutations: {
+    updateTimestamp (state) {
+      state.timestamp = +new Date()
+    },
     ...firebaseMutations
+  },
+  state: {
+    timestamp: null
+  },
+  getters: {
+    timestamp (state) {
+      return state.timestamp
+    }
   },
   strict: process.env.NODE_ENV !== 'production'
 }
