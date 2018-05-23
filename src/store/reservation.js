@@ -1,6 +1,7 @@
 import { db } from '@/firebase'
 import { firebaseAction } from 'vuexfire'
 import isSameDay from 'date-fns/is_same_day'
+import isAfter from 'date-fns/is_after'
 
 const reservations = db.ref('reservations')
 
@@ -14,33 +15,45 @@ export default {
     bindRefs: firebaseAction(({ bindFirebaseRef }) => {
       bindFirebaseRef('reservations', reservations)
     }),
-    addReservation ({ dispatch, commit }, reservation) {
-      // TODO: add validation
-      reservations.push({
+    async addReservation ({ dispatch, commit }, reservation) {
+      if (
+        !isAfter(reservation.date, new Date()) ||
+        reservation.name.trim() === '' ||
+        reservation.phone.trim() === '' ||
+        reservation.table <= 0
+      ) {
+        throw new Error('Invalid Reservation')
+      }
+      const { key } = await reservations.push({
         date: reservation.date.toISOString(),
         name: reservation.name,
         phone: reservation.phone,
         table: reservation.table
-      }, () => {
-        console.log('Reservation Added')
       })
+      return key
     },
-    updateReservation ({ dispatch, commit }, reservation) {
-      // TODO: add validation
-      reservations.child(reservation['.key']).update({
+    async updateReservation ({ dispatch, commit }, reservation) {
+      if (
+        reservation['.key'].trim() === '' ||
+        !isAfter(reservation.date, new Date()) ||
+        reservation.name.trim() === '' ||
+        reservation.phone.trim() === '' ||
+        reservation.table <= 0
+      ) {
+        throw new Error('Invalid Reservation')
+      }
+      await reservations.child(reservation['.key']).update({
         date: reservation.date.toISOString(),
         name: reservation.name,
         phone: reservation.phone,
         table: reservation.table
-      }, () => {
-        console.log('Reservation Updated')
       })
     },
-    removeReservation ({ dispatch, commit }, reservation) {
-      // TODO: add validation
-      reservations.child(reservation['.key']).remove(() => {
-        console.log('Reservation Removed')
-      })
+    async removeReservation ({ dispatch, commit }, reservation) {
+      if (reservation['.key'].trim() === '') {
+        throw new Error('Invalid Reservation')
+      }
+      await reservations.child(reservation['.key']).remove()
     }
   },
   getters: {
