@@ -15,21 +15,26 @@ export default {
       bindFirebaseRef('sales', sales)
     }),
     async addSale ({ dispatch, commit }, sale) {
-      // TODO: add validation
+      if (
+        sale.type.trim() === '' ||
+        sale.price <= 0 ||
+        sale.items.length <= 0
+      ) {
+        throw new Error('Invalid Sale')
+      }
       const { key } = await sales.push({
         type: sale.type,
         price: sale.price,
         items: sale.items,
         createdAt: firebase.database.ServerValue.TIMESTAMP
       })
-      console.log('Sale Added')
       return key
     },
-    removeSale ({ dispatch, commit }, sale) {
-      // TODO: add validation
-      sales.child(sale['.key']).remove(() => {
-        console.log('Sale Removed')
-      })
+    async removeSale ({ dispatch, commit }, sale) {
+      if (sale['.key'].trim() === '') {
+        throw new Error('Invalid Sale')
+      }
+      await sales.child(sale['.key']).remove()
     }
   },
   getters: {}
