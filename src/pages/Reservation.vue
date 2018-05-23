@@ -127,12 +127,9 @@ export default {
   },
   methods: {
     async addReservation () {
-      try {
-        await this.$store.dispatch('reservation/addReservation', this.reservation)
-        this.clearReservation()
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('reservation/addReservation', this.reservation)
+      this.clearReservation()
     },
     clearReservation () {
       this.reservation.date = ''
@@ -145,12 +142,9 @@ export default {
       this.editableReservationOpen = true
     },
     async updateReservation (reservation) {
-      try {
-        await this.$store.dispatch('reservation/updateReservation', reservation)
-        this.editableReservationOpen = false
-      } catch (error) {
-        console.error(error)
-      }
+      // TODO: handle error
+      await this.$store.dispatch('reservation/updateReservation', reservation)
+      this.editableReservationOpen = false
     }
   }
 }
