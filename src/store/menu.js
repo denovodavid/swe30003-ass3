@@ -19,7 +19,7 @@ export default {
     async addItem ({ dispatch, commit }, item) {
       if (
         item.name.trim() === '' ||
-        item.price < 0 ||
+        item.price <= 0 ||
         item.description.trim() === ''
       ) {
         throw new Error('Invalid Item')
@@ -35,7 +35,7 @@ export default {
       if (
         item['.key'].trim() === '' ||
         item.name.trim() === '' ||
-        item.price < 0 ||
+        item.price <= 0 ||
         item.description.trim() === ''
       ) {
         throw new Error('Invalid Item')
