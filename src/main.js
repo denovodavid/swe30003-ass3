@@ -17,10 +17,10 @@ sync(store, router)
 
 Vue.filter('time', (timestamp) => {
   const ms = timestamp % 1000
-  timestamp = (timestamp - ms) / 1000
-  const secs = timestamp % 60
-  timestamp = (timestamp - secs) / 60
-  const mins = timestamp % 60
+  let time = (timestamp - ms) / 1000
+  const secs = time % 60
+  time = (time - secs) / 60
+  const mins = time % 60
 
   const minsString = Math.abs(mins).toString().padStart(2, '0')
   const secsString = Math.abs(secs).toString().padStart(2, '0')
