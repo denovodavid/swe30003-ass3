@@ -24,12 +24,12 @@ export default {
       ) {
         throw new Error('Invalid Item')
       }
-      const { itemKey } = await items.push({
+      const { key } = await items.push({
         name: item.name,
         price: item.price,
         description: item.description
       })
-      return itemKey
+      return key
     },
     async updateItem ({ dispatch, commit }, item) {
       if (
@@ -60,12 +60,12 @@ export default {
       ) {
         throw new Error('Invalid Menu')
       }
-      const { menuKey } = menus.push({
+      const { key } = menus.push({
         name: menu.name,
         items: menu.items,
         description: menu.description
       })
-      return menuKey
+      return key
     },
     async updateMenu ({ dispatch, commit }, menu) {
       if (

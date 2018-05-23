@@ -31,7 +31,7 @@ export default {
         invalid = true
       }
       if (invalid) throw new Error('Invalid Order')
-      const { orderKey } = await orders.push({
+      const { key } = await orders.push({
         type: order.type,
         table: order.table,
         name: order.name,
@@ -41,7 +41,7 @@ export default {
         payment: '',
         createdAt: firebase.database.ServerValue.TIMESTAMP
       })
-      return orderKey
+      return key
     },
     async updateOrder ({ dispatch, commit }, order) {
       let invalid = false
