@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import MenuBar from '@/components/MenuBar'
 import Datepicker from 'vuejs-datepicker'
 import Modal from '@/components/Modal'
@@ -113,9 +113,16 @@ export default {
   computed: {
     availableTables () {
       return this.tables
+        .filter(t => !this.unavailableTables.includes(t))
+    },
+    unavailableTables () {
+      return this.reservedTablesOnDate(this.reservation.date)
     },
     ...mapState('reservation', [
       'reservations'
+    ]),
+    ...mapGetters('reservation', [
+      'reservedTablesOnDate'
     ])
   },
   methods: {

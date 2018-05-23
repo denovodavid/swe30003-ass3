@@ -1,5 +1,6 @@
 import { db } from '@/firebase'
 import { firebaseAction } from 'vuexfire'
+import isSameDay from 'date-fns/is_same_day'
 
 const reservations = db.ref('reservations')
 
@@ -42,5 +43,14 @@ export default {
       })
     }
   },
-  getters: {}
+  getters: {
+    reservationsOnDate: state => date => {
+      return state.reservations
+        .filter(res => isSameDay(res.date, date))
+    },
+    reservedTablesOnDate: (state, getters) => date => {
+      return getters.reservationsOnDate(date)
+        .map(res => res.table)
+    }
+  }
 }
