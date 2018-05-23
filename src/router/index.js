@@ -4,6 +4,7 @@ import Home from '@/pages/Home'
 import Menu from '@/pages/Menu'
 import Order from '@/pages/Order'
 import Reservation from '@/pages/Reservation'
+import Sale from '@/pages/Sale'
 
 Vue.use(Router)
 
@@ -28,7 +29,11 @@ export default new Router({
       path: '/reservation',
       name: 'Reservation',
       component: Reservation
+    },
+    {
+      path: '/sale',
+      name: 'Sale',
+      component: Sale
     }
-
   ]
 })

@@ -13,6 +13,9 @@
       <li>
         <router-link :to="{ name: 'Reservation' }">Reservation</router-link>
       </li>
+      <li>
+        <router-link :to="{ name: 'Sale' }">Sale</router-link>
+      </li>
     </ul>
   </div>
 </template>
