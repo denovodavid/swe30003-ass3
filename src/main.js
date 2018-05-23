@@ -28,6 +28,11 @@ Vue.filter('time', (timestamp) => {
   return `${timestamp < 0 ? '-' : ''}${minsString}:${secsString}`
 })
 
+Vue.filter('money', (number) => {
+  if (isNaN(Number(number))) number = 0
+  return '$' + Math.round(number).toLocaleString('en-AU')
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
