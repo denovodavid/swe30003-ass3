@@ -111,6 +111,7 @@ export default {
   },
   methods: {
     async pay (order) {
+      // TODO: handle error
       const items = this.items
         .filter(item => order.items.includes(item['.key']))
       const price = items
