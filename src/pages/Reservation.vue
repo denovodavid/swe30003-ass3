@@ -83,6 +83,21 @@ import MenuBar from '@/components/MenuBar'
 import Datepicker from 'vuejs-datepicker'
 import Modal from '@/components/Modal'
 import clone from 'lodash/clone'
+import addDays from 'date-fns/add_days'
+
+class Reservation {
+  constructor (
+    date = addDays(new Date(), 1),
+    name = '',
+    phone = '',
+    table = 0
+  ) {
+    this.date = date
+    this.name = name
+    this.phone = phone
+    this.table = table
+  }
+}
 
 export default {
   name: 'reservation-page',
@@ -93,19 +108,11 @@ export default {
   },
   data () {
     return {
-      reservation: {
-        date: '',
-        name: '',
-        phone: '',
-        table: 0
-      },
+      reservation: new Reservation(),
       editableReservationOpen: false,
       editableReservation: {
         '.key': '',
-        date: '',
-        name: '',
-        phone: '',
-        table: 0
+        ...new Reservation()
       },
       tables: Array(24 - 1 + 1).fill().map((_, idx) => 1 + idx)
     }
@@ -132,10 +139,7 @@ export default {
       this.clearReservation()
     },
     clearReservation () {
-      this.reservation.date = ''
-      this.reservation.name = ''
-      this.reservation.phone = ''
-      this.reservation.table = 0
+      this.reservation = new Reservation()
     },
     editReservation (reservation) {
       this.editableReservation = clone(reservation)
