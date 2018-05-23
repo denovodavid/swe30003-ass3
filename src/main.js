@@ -33,5 +33,6 @@ new Vue({
   created () {
     this.$store.dispatch('menu/bindRefs')
     this.$store.dispatch('order/bindRefs')
+    this.$store.dispatch('reservation/bindRefs')
   }
 })
