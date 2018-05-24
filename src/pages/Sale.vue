@@ -1,8 +1,6 @@
 <template>
 <div>
-  <menu-bar/>
-  <h1>Sale Page</h1>
-  <h2>Unpaid Orders</h2>
+  <h1>Unpaid Orders</h1>
   <table>
     <thead>
       <tr>
@@ -33,7 +31,7 @@
     </tbody>
   </table>
 
-  <h2>Sales</h2>
+  <h1>Sales</h1>
   <table>
     <thead>
       <tr>

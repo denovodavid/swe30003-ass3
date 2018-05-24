@@ -1,8 +1,6 @@
 <template>
 <div>
-  <menu-bar/>
-  <h1>Reservation Page</h1>
-  <h2>Reservations</h2>
+  <h1>Reservations</h1>
   <div>
     <label>Date:</label>
     <datepicker v-model="reservation.date"/>

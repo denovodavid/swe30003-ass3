@@ -1,8 +1,8 @@
 <template>
-<div>
-  <menu-bar/>
-  <h1>Home Page</h1>
-</div>
+<b-container>
+  <br>
+  <h1>Home</h1>
+</b-container>
 </template>
 
 <script>
